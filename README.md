@@ -3,9 +3,9 @@ This demo shows how Terraform modules can be used to abstract DB creation and pa
 
 ## Note
 This repo has two git tag versions:
-v1.0: Can be used by itself for testing
-v2.0: Is meant to be used alongside Terraform Cloud with private module registry
-v3.0: Is meant to be used with Terraform Cloud integrated with ServiceNow 
+- v1.0: Can be used by itself for testing
+- v2.0: Is meant to be used alongside Terraform Cloud with private module registry
+- v3.0: Is meant to be used with Terraform Cloud integrated with ServiceNow 
 
 ## Instructions
 ### V1.0
