@@ -34,4 +34,5 @@ resource "aws_secretsmanager_secret" "example" {
 resource "aws_secretsmanager_secret_version" "example" {
   secret_id     = aws_secretsmanager_secret.example.id
   secret_string = random_string.random_secret.result
+  depends_on = [aws_secretsmanager_secret.example]
 }
