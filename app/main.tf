@@ -41,6 +41,6 @@ resource "aws_instance" "web" {
         echo  ${var.db_ip_addr} > /home/ubuntu/url.txt
 	EOF
   tags = {
-    Name = "Stenio"
+    Name = "Stenio2"
   }
 }
