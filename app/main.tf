@@ -34,7 +34,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
+  instance_type = "t2.micro"
   user_data = <<-EOF
 		#! /bin/bash
         echo  ${data.aws_secretsmanager_secret_version.example.secret_string} > /home/ubuntu/secret.txt
