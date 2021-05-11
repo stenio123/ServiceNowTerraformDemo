@@ -1,16 +1,27 @@
-# reference to module
-/**module "db" {
-  source = "../terraform_aws_db_module"
-}
-module "db-module" {
-  source  = "app.terraform.io/TFE_PoV/db-module/aws"
-  version = "2.0.0"
-}*/
+provider "vault" {
+  address = var.vault_url
+  auth_login {
+    path = "auth/userpass/login/${var.vault_username}"
 
-# depends_on is a fix for terraform <0.12 which reads data before references by default
-data "aws_secretsmanager_secret_version" "example" {
-  secret_id = var.aws_secret_id
-  # depends_on = [module.db-module.aws_secret_id]
+    parameters = {
+      password = var.vault_userpass
+    }
+  }
+}
+
+data "vault_generic_secret" "db_secret" {
+  path = var.vault_secret_path
+}
+
+
+data "vault_aws_access_credentials" "creds" {
+  backend = var.vault_aws_secret_path
+  role    = var.vault_aws_role
+}
+
+provider "aws" {
+  access_key = "${data.vault_aws_access_credentials.creds.access_key}"
+  secret_key = "${data.vault_aws_access_credentials.creds.secret_key}"
 }
 
 
@@ -37,7 +48,7 @@ resource "aws_instance" "web" {
   instance_type = "t2.micro"
   user_data = <<-EOF
 		#! /bin/bash
-        echo  ${data.aws_secretsmanager_secret_version.example.secret_string} > /home/ubuntu/secret.txt
+        echo  ${data.vault_generic_secret.db_secret.data_json} > /home/ubuntu/secret.txt
         echo  ${var.db_ip_addr} > /home/ubuntu/url.txt
 	EOF
   tags = {
