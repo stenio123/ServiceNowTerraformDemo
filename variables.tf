@@ -1,6 +1,6 @@
 variable "vault_url" {
   description = "Placeholder for a module output name"
-  default ="db_ip_addr"
+  default =""
 }
 variable "vault_username" {
   description = "Placeholder for another module output name"
